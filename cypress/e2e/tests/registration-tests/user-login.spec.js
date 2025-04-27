@@ -6,14 +6,16 @@ describe("User Login", () => {
   const userLoginPage = new UserLoginPage();
   const userAccountPage = new UserAccountPage();
 
+  beforeEach(() => {
+    Cypress.on("uncaught:exception", (err, runnable) => {
+      return false;
+    });
+  });
+
   it("Should login with valid credentials", () => {
     const email = "mary.jane@gmail.com";
     const password = "User123@+";
     const fullName = "Mary Jane";
-
-    Cypress.on("uncaught:exception", (err, runnable) => {
-      return false;
-    });
 
     userLoginPage.visit();
     cy.wait(2000);
@@ -32,6 +34,21 @@ describe("User Login", () => {
     userAccountPage
       .getWelcomeMessage()
       .should("contain", `Welcome, ${fullName}!`);
+  });
+
+  it.only("should be able to logout successfully", () => {
+    const email = "mary.jane@gmail.com";
+    const password = "User123@+";
+    const fullName = "Mary Jane";
+
+    cy.login(email, password, fullName);
+
+    userLoginPage
+      .getCustomerMenuToggle()
+      .filter(":visible")
+      .click({ force: true });
+    userLoginPage.getSignOutButton().click();
+    userLoginPage.getSignedOutTitle().should("have.text", "You are signed out");
   });
 
   it("Should not login with invalid credentials", () => {

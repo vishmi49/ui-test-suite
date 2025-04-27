@@ -27,21 +27,46 @@ class ProductDetailsPage {
   }
 
   getProductItem() {
-    cy.get(
-      "ol.products.list.items.product-items > li.item.product.product-item"
-    );
+    return cy.get("li.item.product.product-item").first();
   }
   getProductPrice() {
     return cy.get("span.price");
+  }
+
+  getProductTitle() {
+    return cy
+      .get("li.item.product.product-item")
+      .first()
+      .within(() => {
+        cy.get("strong.product.name.product-item-name a.product-item-link")
+          .invoke("text")
+          .then((productTitle) => {
+            cy.log("Product Title:", productTitle.trim());
+          });
+      });
+  }
+
+  getProductSize() {
+    return cy
+      .get("li.item.product.product-item")
+      .first()
+      .find(".swatch-attribute.size .swatch-option")
+      .contains("XS");
+  }
+
+  getProductColor() {
+    return cy
+      .get("li.item.product.product-item")
+      .first()
+      .find(".swatch-attribute.color .swatch-option[option-label='Blue']");
   }
 
   getAddToCartButton() {
     return cy
       .get("li.item.product.product-item")
       .first()
-      .within(() => {
-        cy.get('button[type="submit"]');
-      });
+      .find("button.action.tocart.primary")
+      .contains("Add to Cart");
   }
 }
 

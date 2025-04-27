@@ -15,6 +15,17 @@ class UserLoginPage {
   getSignInButton() {
     return cy.get("#send2");
   }
+
+  getCustomerMenuToggle() {
+    return cy.get('button.action.switch[data-action="customer-menu-toggle"]');
+  }
+  getSignOutButton() {
+    return cy.get("li.authorization-link a").contains("Sign Out");
+  }
+
+  getSignedOutTitle() {
+    return cy.get('span.base[data-ui-id="page-title-wrapper"]');
+  }
 }
 
 export default UserLoginPage;
