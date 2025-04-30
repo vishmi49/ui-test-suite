@@ -9,7 +9,7 @@ module.exports = defineConfig({
     viewportWidth: 1280,
     viewportHeight: 720,
     fixturesFolder: "cypress/fixtures",
-    // screenshotsFolder: 'cypress/screenshots',
+    screenshotsFolder: "cypress/screenshots",
     // videosFolder: 'cypress/videos',
     specPattern: "cypress/e2e/**/*.spec.js",
     retries: {
@@ -25,6 +25,7 @@ module.exports = defineConfig({
     },
     reporter: "mochawesome",
     reporterOptions: {
+      reportDir: "cypress/results/",
       overwrite: false,
       html: false,
       json: true,

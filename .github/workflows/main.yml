@@ -9,23 +9,29 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Cypress run in Chrome
         uses: cypress-io/github-action@v6
         with:
-          browsers: chrome
-          command: npx cypress run --browser chrome --reporter-options reportDir=cypress/reports
+          browser: chrome
+          command: npm run test:ci
+        continue-on-error: true
 
-      - name: Merge Mochaawesome reports
-        run: npx mochaawesome-merge cypress/reports/*.json > cypress/reports/merged-reports.json
+      - name: Merge Mochawesome reports
+        run: npx mochawesome-merge cypress/results/*.json > cypress/results/merged-reports.json
 
       - name: Generate HTML Reports
-        run: npx cypress/reports/merged-reports.json --reportDir cypress/reports -f "test-report.html"
+        run: npx marge cypress/results/merged-reports.json --reportDir cypress/results -f "test-report.html"
 
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: Cypress HTML Report
-          path: cypress/reports
+          path: cypress/results

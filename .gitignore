@@ -10,3 +10,8 @@ node_modules
 *.zip
 *.tar.gz
 *.rargit
+
+cypress/reports/*
+cypress/results/*
+cypress/videos/*
+cypress/screenshots/*
