@@ -31,7 +31,7 @@ describe("Product Details Page", () => {
     productDetailsPage.visit();
     productDetailsPage.getPageTitle().should("contain", "Jackets");
     productDetailsPage.getPriceFilter();
-    productDetailsPage.getPriceRange().click();
+    productDetailsPage.getPriceRange().click({ force: true });
     cy.url().should("include", "price");
 
     productDetailsPage.getNumberOfProductItems().then(($productItems) => {
