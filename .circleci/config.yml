@@ -26,6 +26,17 @@ jobs:
           key: npm-cache-{{ checksum "package-lock.json" }}
 
       - run:
+          name: Install Google Chrome
+          command: |
+            sudo apt update
+            sudo apt install -y wget curl gnupg unzip
+            curl -sSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-linux-signing-keyring.gpg > /dev/null
+            echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-signing-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+            sudo apt update
+            sudo apt install -y google-chrome-stable
+            google-chrome --version
+
+      - run:
           name: Run Cypress tests in Chrome
           command: npm run test:cci
           when: always
