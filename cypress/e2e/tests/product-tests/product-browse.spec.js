@@ -74,7 +74,7 @@ describe("Product Details Page", () => {
     productDetailsPage.getProductItem().should("contain", productName);
   });
 
-  it.only("should be able to navigate to pages using pagination", () => {
+  it("should be able to navigate to pages using pagination", () => {
     productDetailsPage.getWomenTopsPage();
     productDetailsPage.getPageTitle().should("contain", "Tops");
     cy.scrollTo("bottom");
