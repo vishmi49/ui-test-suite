@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: cimg/node:22.1.0-browsers  # Includes Node.js, Chrome, and Firefox
+      - image: cimg/node:22.1.0-browsers # Includes Node.js, Chrome, and Firefox
     working_directory: ~/project
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
 
       - run:
           name: Run Cypress tests in Chrome
-          command: npm run test:ci
+          command: npm run test:cci
           when: always
 
       - run:
