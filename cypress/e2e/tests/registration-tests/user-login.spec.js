@@ -36,7 +36,7 @@ describe("User Login", () => {
       .should("contain", `Welcome, ${fullName}!`);
   });
 
-  it.only("should be able to logout successfully", () => {
+  it("should be able to logout successfully", () => {
     const email = "mary.jane@gmail.com";
     const password = "User123@+";
     const fullName = "Mary Jane";
@@ -51,25 +51,21 @@ describe("User Login", () => {
     userLoginPage.getSignedOutTitle().should("have.text", "You are signed out");
   });
 
-  it("Should not login with invalid credentials", () => {
+  it("should fail login with invalid credentials", () => {
     const email = "mary.jane@gmail.com";
-    const password = "User12345";
+    const password = "InvalidPassword123";
 
     userLoginPage.visit();
     cy.url().should("include", "/customer/account/login/");
-
     userLoginPage.getEmailField().type(email);
     userLoginPage.getPasswordField().type(password);
-
     userLoginPage.getSignInButton().click();
 
-    cy.get(".message-error > div")
-      .invoke("text")
-      .then((errorMessage) => {
-        cy.log("Error Message:", errorMessage.trim());
-        expect(errorMessage.trim()).to.equal(
-          "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later."
-        );
-      });
+    userLoginPage
+      .getErrorMessage()
+      .should(
+        "have.text",
+        "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later."
+      );
   });
 });

@@ -15,7 +15,9 @@ class ShoppingCartPage {
   }
 
   getCartItemCount() {
-    return cy.get("span.counter-number");
+    return cy.get("span.counter-number", {
+      timeout: Cypress.config().largeTimeout,
+    });
   }
 
   getDeleteConfirmationButton() {
@@ -31,7 +33,13 @@ class ShoppingCartPage {
   }
 
   getDeleteIcon() {
-    return cy.get('a.action.action-delete[title="Remove item"]').click();
+    return cy.get('a.action.action-delete[title="Remove item"]', {
+      timeout: Cypress.config().largeTimeout,
+    });
+  }
+
+  getEditIcon() {
+    return cy.get('a.action.action-edit[title="Edit item parameters"]');
   }
 
   getCartItemQuantityInput() {
@@ -50,9 +58,16 @@ class ShoppingCartPage {
     return cy.get("td.col.subtotal span.cart-price > span.price");
   }
 
+  getOrderTotal() {
+    return cy.get("tr.grand.totals");
+  }
+
   getProceedToCheckoutButton() {
     return cy.get('button[data-role="proceed-to-checkout"]');
   }
-}
 
+  getItemSize() {
+    return cy.get("td.col.item dd").first();
+  }
+}
 export default ShoppingCartPage;

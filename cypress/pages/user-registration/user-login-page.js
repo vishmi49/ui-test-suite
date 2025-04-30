@@ -26,6 +26,12 @@ class UserLoginPage {
   getSignedOutTitle() {
     return cy.get('span.base[data-ui-id="page-title-wrapper"]');
   }
+  getSuccessMessage() {
+    return cy.get("#message-success");
+  }
+  getErrorMessage() {
+    return cy.get("div.message-error > div");
+  }
 }
 
 export default UserLoginPage;

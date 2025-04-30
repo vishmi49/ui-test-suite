@@ -2,8 +2,20 @@ class ProductDetailsPage {
   visit() {
     cy.visit(`/women/tops-women/jackets-women.html`);
   }
+
+  getWomenTopsPage() {
+    cy.visit(`/women/tops-women.html`);
+  }
+
+  getHomePageTitle() {
+    return cy.get("h1.page-title");
+  }
   getPageTitle() {
     return cy.get("#page-title-heading");
+  }
+
+  getLogo() {
+    return cy.get("a.logo");
   }
 
   getPriceFilter() {
@@ -46,6 +58,12 @@ class ProductDetailsPage {
       });
   }
 
+  getAllProductTitles() {
+    return cy.get(
+      "li.item.product.product-item strong.product.name.product-item-name a.product-item-link"
+    );
+  }
+
   getProductSize() {
     return cy
       .get("li.item.product.product-item")
@@ -67,6 +85,26 @@ class ProductDetailsPage {
       .first()
       .find("button.action.tocart.primary")
       .contains("Add to Cart");
+  }
+
+  getSortByDropdown() {
+    return cy.get("#sorter");
+  }
+
+  getSearchBox() {
+    return cy.get("#search");
+  }
+
+  getPaginationBar() {
+    return cy.get(".pages");
+  }
+
+  getCurrentPage() {
+    return cy.get("li.item.current");
+  }
+
+  getNextPage() {
+    return cy.get("li.item a.page");
   }
 }
 
