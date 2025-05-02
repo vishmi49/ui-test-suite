@@ -1,14 +1,15 @@
 pipeline {
   agent {
-    docker {
-      image 'cypress/browsers:node-22.0.0-chrome-122.0.6261.94-1-ff-123.0-edge-122.0.2365.92-1'
-      args '-u root' 
+    agent any
+    tools {
+      nodejs 'NodeJ22'
     }
   }
 
   environment {
-    CI = 'true'
-  }
+       CHROME_BIN = '/bin/google-chrome'
+      
+   }
 
   stages {
 
