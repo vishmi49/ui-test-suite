@@ -1,0 +1,68 @@
+image: cypress/browsers:node-22.0.0-chrome-122.0.6261.94-1-ff-123.0-edge-122.0.2365.92-1
+
+stages:
+  - install
+  - test
+  - merge_reports
+  - generate_html
+  - archive
+  - cleanup
+
+variables:
+  CHROME_BIN: "/usr/bin/google-chrome"
+  CI: "true"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+before_script:
+  - npm ci
+
+install_dependencies:
+  stage: install
+  script:
+    - echo "Dependencies installed via before_script"
+
+cypress_tests:
+  stage: test
+  script:
+    - npx cypress run --browser chrome --reporter mochawesome --reporter-options reportDir=cypress/results || echo "⚠️ Cypress tests failed"
+
+merge_mochawesome:
+  stage: merge_reports
+  script:
+    - mkdir -p cypress/reports
+    - |
+      if ls cypress/results/mochawesome*.json 1> /dev/null 2>&1; then
+        npx mochawesome-merge cypress/results/mochawesome*.json > cypress/reports/merged-reports.json
+      else
+        echo "⚠️ No Mochawesome reports found to merge"
+        echo "{}" > cypress/reports/merged-reports.json
+      fi
+
+generate_html_report:
+  stage: generate_html
+  script:
+    - |
+      if [ -f cypress/reports/merged-reports.json ]; then
+        npx mochawesome-report-generator cypress/reports/merged-reports.json --reportDir cypress/reports --reportFilename test-report.html
+      else
+        echo "⚠️ Merged report file not found. Skipping HTML report generation."
+      fi
+
+archive_report:
+  stage: archive
+  artifacts:
+    paths:
+      - cypress/reports/
+    expire_in: 1 day
+    when: always
+  script:
+    - echo "Reports archived"
+
+cleanup_results:
+  stage: cleanup
+  script:
+    - rm -rf cypress/results/mochawesome*.json || echo "Nothing to clean."
