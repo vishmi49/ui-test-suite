@@ -33,7 +33,7 @@ pipeline {
       steps {
         script {
           sh 'mkdir -p cypress/reports'
-          
+
           def reportFiles = sh(script: "ls cypress/results/mochawesome*.json 2>/dev/null | wc -l", returnStdout: true).trim()
           if (reportFiles != "0") {
             sh '''
@@ -62,7 +62,8 @@ pipeline {
 
     stage('Archive Test Report') {
       steps {
-        archiveArtifacts artifacts: 'cypress/results/**', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'cypress/reports/**', allowEmptyArchive: true
+
       }
     }
 
