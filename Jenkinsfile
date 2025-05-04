@@ -32,6 +32,8 @@ pipeline {
     stage('Merge Mochawesome Reports') {
       steps {
         script {
+          sh 'mkdir -p cypress/reports'
+          
           def reportFiles = sh(script: "ls cypress/results/mochawesome*.json 2>/dev/null | wc -l", returnStdout: true).trim()
           if (reportFiles != "0") {
             sh '''
