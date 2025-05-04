@@ -60,7 +60,7 @@ archive_report:
     expire_in: 1 day
     when: always
   script:
-    - echo "Reports archived"
+    - echo "Reports archived."
 
 cleanup_results:
   stage: cleanup
