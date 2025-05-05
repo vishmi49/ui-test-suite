@@ -22,16 +22,22 @@ before_script:
 
 install_dependencies:
   stage: install
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "gitlab-setup"'
   script:
     - echo "Dependencies installed via before_script"
 
 cypress_tests:
   stage: test
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "gitlab-setup"'
   script:
     - npx cypress run --browser chrome --reporter mochawesome --reporter-options reportDir=cypress/results || echo "⚠️ Cypress tests failed"
 
 merge_mochawesome:
   stage: merge_reports
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "gitlab-setup"'
   script:
     - mkdir -p cypress/reports
     - |
@@ -44,6 +50,8 @@ merge_mochawesome:
 
 generate_html_report:
   stage: generate_html
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "gitlab-setup"'
   script:
     - |
       if [ -f cypress/reports/merged-reports.json ]; then
@@ -54,15 +62,19 @@ generate_html_report:
 
 archive_report:
   stage: archive
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "gitlab-setup"'
   artifacts:
     paths:
       - cypress/reports/
     expire_in: 1 day
     when: always
   script:
-    - echo "Reports archived."
+    - echo "Reports archived"
 
 cleanup_results:
   stage: cleanup
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "gitlab-setup"'
   script:
     - rm -rf cypress/results/mochawesome*.json || echo "Nothing to clean."
