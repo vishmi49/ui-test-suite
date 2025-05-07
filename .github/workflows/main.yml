@@ -1,0 +1,40 @@
+name: Cypress Tests
+
+on:
+  push:
+  branches:
+    - main
+    - github_actions_setup
+  workflow_dispatch:
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress run in Chrome
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          command: npm run test:gha
+        continue-on-error: true
+
+      - name: Merge Mochawesome reports
+        run: npx mochawesome-merge cypress/results/*.json > cypress/results/merged-reports.json
+
+      - name: Generate HTML Reports
+        run: npx marge cypress/results/merged-reports.json --reportDir cypress/results -f "test-report.html"
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cypress HTML Report
+          path: cypress/results
